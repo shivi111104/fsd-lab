@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form</title>
+    <link rel="stylesheet" href="form.css" />
+  </head>
+
+  <body>
+    <form action="backend.php" onsubmit="return validateForm()">
+      <div class="form-group">
+        <label for="name"><b>Name:</b></label>
+        <input type="text" id="name" name="name" required />
+      </div>
+      <div class="form-group">
+        <label for="contact"><b>Contact Number:</b></label>
+        <input
+          type="text"
+          id="contact"
+          name="contact"
+          maxlength="10"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="email"><b>Email:</b></label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="state"><b>State:</b></label>
+        <select id="state" name="state" onchange="updateCityOptions()" required>
+          <option value="">Select State</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Gujarat">Gujarat</option>
+          <option value="Karnataka">Karnataka</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="city"><b>City:</b></label>
+        <select id="city" name="city" required>
+          <option value="">Select City</option>
+        </select>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+
+    <script>
+      const cityOptions = {
+        Maharashtra: ["Mumbai", "Pune", "Nagpur"],
+        Gujarat: ["Ahmedabad", "Surat", "Vadodara"],
+        Karnataka: ["Bangalore", "Mysore", "Mangalore"],
+      };
+
+      function updateCityOptions() {
+        const stateSelect = document.getElementById("state");
+        const citySelect = document.getElementById("city");
+        const selectedState = stateSelect.value;
+
+        citySelect.innerHTML = '<option value="">Select City</option>';
+        if (selectedState && cityOptions[selectedState]) {
+          cityOptions[selectedState].forEach((city) => {
+            const option = document.createElement("option");
+            option.value = city;
+            option.text = city;
+            citySelect.appendChild(option);
+          });
+        }
+      }
+
+      document.getElementById("contact").addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+      });
+
+      function validateForm() {
+        const contact = document.getElementById("contact").value;
+        if (contact.length !== 10) {
+          alert("Please enter a valid 10-digit contact number.");
+          return false;
+        }
+        return true;
+      }
+    </script>
+  </body>
+</html>
